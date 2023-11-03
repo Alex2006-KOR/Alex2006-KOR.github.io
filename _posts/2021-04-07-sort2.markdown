@@ -1,0 +1,166 @@
+---
+
+layout:   post
+title:    Sort2
+date:     2021-04-07
+image:    algorithm/algorithm.png
+category: Algorithm
+tags:     Heap HeapSort PriorityQueue
+author:   Alex2006
+
+---
+  
+## Heap Sort
+* Heap이란? - 아래 두 조건을 만족한다.(And 조건)
+  * Complete binary tree이면서
+    <center><img src="/images/algorithm/20210407/heap_1.jpg"></center>
+    * 마지막 Level을 제외하면 완전히 꽉 차있고
+    * 마지막 Level은 가장 오른쪽부터 연속된 몇개의 노드가 비어 있을 수 있다.
+  * Heap Property를 만족 해야 한다.    
+    * Max property - 부모는 자식보다 크거나 같다.
+    * Min property - 부모는 자식보다 작거나 같다.
+    * <span style="color:red">두 개의 Heap이 동일한 Data를 가지고 있다고 하더라도 같은 Heap은 아니다 == 동일한 Data를 가진 Heap이 존재</span>
+* Heap의 표현 방법
+  <center><img src="/images/algorithm/20210407/heap_2.jpg"></center>
+* MAX-Heapify
+  * <span style="color:red">유일하게 root만이 max heap property를 만족하지 않는 경우 heap을 만드는 연산</span>
+    <center><img src="/images/algorithm/20210407/heap_3.jpg"></center>
+  * Tree 전체의 모양은 complete binary tree
+  * 유일하게 root만 max-heap property를 만족하지 않음
+  * example)
+    자식 중 더 큰 node와 swap한다.
+    * Step1)
+      <center><img src="/images/algorithm/20210407/heap_4.jpg"></center>
+    * Step2)
+      <center><img src="/images/algorithm/20210407/heap_5.jpg"></center>
+    * Step3)
+      <center><img src="/images/algorithm/20210407/heap_6.jpg"></center>
+    * Step4)
+      <center><img src="/images/algorithm/20210407/heap_7.jpg"></center>
+    * pseudo code)
+{% highlight cpp %}
+void maxHeapify ( A, i ) // 노드 i를 root로 하는 sub-tree를 max-heapify 한다    
+    if there is no child of A[i] then
+        return
+    
+    k <- index of the biggest child of i
+    
+    if A[i] >= A[k] then
+        return
+    
+    swap(A[i], A[k])
+    maxHeapify(A, k)
+{% endhighlight %}    
+
+* Build-Heap
+  * 정렬할 배열을 heap으로 만드는 과정
+  * example)
+    * A[] = {4, 1, 3, 2, 16, 9, 10, 14, 8, 7}
+    * Step1)
+      <center><img src="/images/algorithm/20210407/heap_8.jpg"></center>
+    * Step2)
+      <center><img src="/images/algorithm/20210407/heap_9.jpg"></center>
+    * Step3)
+      <center><img src="/images/algorithm/20210407/heap_10.jpg"></center>
+    * Step4)
+      <center><img src="/images/algorithm/20210407/heap_11.jpg"></center>
+    * pseudo code)
+{% highlight cpp %}
+void BuildMaxHeap(A)
+    heap-size[A] <- length[A]    
+    for i <- [length[A]/2] downto 1 // n/2    
+        do maxHeapify(A, i) // O(log(n))    
+
+    // - 시간복잡도 - 
+    //   n/2log(n) 인 것처럼 보이지만 maxHeapify가   
+    //   root node에 대해서 수행 될 때 log(n)이고
+    //   실제로는 더 적은 시간이 걸린다 따라서 시간복잡도는 O(n)
+{% endhighlight %}
+
+* Heap-sort
+  * ① 주어진 data로 heap 을 만든다(Build-Heap)
+  * ② Heap에서 최대값(root)을 가장 마지막 값과 바꾼다.
+  * ③ Heap의 크기가 1 줄어든 것으로 간주한다, 즉 마지막 값은 Heap의 일부가 아닌 것으로 간주
+  * ④ root node에 대해서 Heapify(1)를 수행한다.
+  * ②~ ④ 반복한다
+  * pseudo code)
+{% highlight cpp %}
+void heapSort (A)
+    BuildMaxHeap(A) // O(n)
+    for i<- heapSize downto 2 do // n-1 times
+        swap(A[1], A[i]) // O(1)
+        heapSize -= 1 // O(1)
+        MaxHeapify(A, 1) // O(log(n))
+
+    // - 시간복잡도 - 
+    //   O(nlog(n))
+{% endhighlight %}
+
+## Priority Queue
+* Heap Sort 응용하고 아래 두가지 연산을 지원
+  * MaxHeapInsert(X) : 새로운 원소를 삽입
+  * ExtractMax() : 최대값을 삭제하고 return
+
+* MaxHeapInsert(X)
+  * 마지막 Leaf에 new node를 추가하여 Heap-Property를 만족하도록 부모와 교환
+{% highlight cpp %}
+void MaxHeapInsert (A)
+    //가장 마지막 노드에 새로운 Key를 삽입
+    heapSize = heapSize + 1
+    A[heapSize] = key
+    i = heapSize
+      
+    //새로 삽입한 노드가 root가 아니고, heap property를 만족하지 않으면
+    while( i > 1 and A[Parent(i)] < A[i] )
+        Swap A[i], A[Parent(i)]
+        i = Parent(i)
+{% endhighlight %}
+
+* ExtractMax(X)
+  * MaxHeap에서 max값은 root에 있으므로 root를 꺼낸다.
+  * root자리에 마지막 leaf를 옮겨 놓는다.
+  * Heap-Property를 만족하도록 Heapify를 수행
+    <center><img src="/images/algorithm/20210407/heap_12.jpg"></center>
+{% highlight cpp %}
+Node ExtractMax (A)
+    if HeapSize[A] < 1 then
+        error "Heap Overflow"
+
+    max <- A[1]                   //root에서 max값을 꺼내고
+    A[i] <- A[HeapSize[A]]        //leaf를 root로 옮긴다
+    HeapSize[A] = HeapSize[A] - 1 //Heap size를 1개 줄이고
+    MaxHeapify(A, 1)              //Max heapify를 수행
+    
+    return max
+{% endhighlight %}
+
+* Find minimun value from MaxHeap or maximum value from MinHeap
+  <center><img src="/images/algorithm/20210407/heap_13.jpg"></center>
+{% highlight cpp %}
+void FindMaxValueInMinHeap (A)
+    max = -1
+
+    //시간 복잡도는 O(n/2) 이므로 O(n)이 된다.
+    for i <- (HeapSize[A] downto (HeapSize[A] + 1)/2 do
+        if max < A[i] then
+            max = A[i]
+
+    return max
+{% endhighlight %}
+
+{% highlight cpp %}
+void FindMinValueInMAXHeap (A)
+    min = 1e9
+
+    //시간 복잡도는 O(n/2) 이므로 O(n)이 된다.
+    for i <- (HeapSize[A] downto (HeapSize[A] + 1)/2 do
+        if min < A[i] then
+            min = A[i]
+
+    return min
+{% endhighlight %}
+
+## Problem
+ * [ACMICPC: 수 정렬하기](https://www.acmicpc.net/problem/2750)
+ * [LEETCODE: Nums color](https://leetcode.com/problems/sort-colors)
+**<center><span style="color:navy">Sort2</span></center>**  

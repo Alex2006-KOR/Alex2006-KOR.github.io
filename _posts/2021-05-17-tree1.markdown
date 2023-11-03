@@ -1,0 +1,77 @@
+---
+
+layout:   post
+title:    Tree1
+date:     2021-05-17
+image:    algorithm/algorithm.png
+category: Algorithm
+tags:     Tree
+author:   Alex2006
+
+---
+
+## Tree and Binary Tree
+### Tree ?
+  * Example : 조직도 → 디렉토리와 서브 디렉토리 구조 or 가계도
+  * Tree는 <span style="color:blue">Node</span> Node를 연결하는 <span style="color:blue">Link</span>들로 구성
+    * Node의 개수가 n개라면 Link의 개수는 n-1개이다.
+    * x Node에서 y Node까지의 경로는 유일하다.
+
+### Binary Tree ?
+  * 모든 Node가 최대 2개의 자식만을 갖는다.
+  * 각각의 Node는 자신이 왼쪽 자식인지 오른쪽 자식인지 구분(지정) 한다.
+  * Example : (x + y) * ((a + b)/c) 이 수식을 Binary Tree로 표현하면?
+<!-- ![TREE1]({{site.basurl}}/assets/img/learning/20210517/tree_1.jpg){: .center} -->
+* Full binary tree and Complete binary tree
+<!-- ![TREE2]({{site.basurl}}/assets/img/learning/20210517/tree_2.jpg){: .center} -->
+  * 높이가 h이면 노드의 개수는 2<sup>h</sup>-1
+  * Common feature: 노드가 N개인 full 혹은 complete binary tree의 높이는 O(logN)  
+    --> Full or Complete binary tree는 배열로 표현이 가능
+    * Tree의 코드 표현(연결리스트 사용시)
+<!-- ![TREE3]({{site.basurl}}/assets/img/learning/20210517/tree_3.jpg){: .center} -->
+
+#### Inorder Traversal
+<!-- ![TREE4]({{site.basurl}}/assets/img/learning/20210517/tree_4.jpg){: .center} -->
+  * x + y * a + b / c (연산자 우선 순위 고려 안됨)  
+  * 순회 시 시작에서 '(' 끝에서 ')'를 넣으면 된다  
+  * ( x + y ) * ( ( a + b ) / c )  
+<!-- ![TREE4]({{site.basurl}}/assets/img/learning/20210517/tree_4.jpg){: .center} -->
+  * Sub-tree와 관계
+      T<sub>L</sub>을 inorder로 순회 -> R 순회 -> T<sub>R</sub>을 inorder로 순회
+  * pseudo code)
+{% highlight cpp %}
+inorderTreeWalk (x) // root 노드가 x인 sub-tree를 inorder로 순회
+    if x ne null then
+        inorderTreeWalk(left[x])
+        print key[x]
+        inorderTreeWalk(right[x])
+{% endhighlight %}
+
+#### Preorder Traversal
+  * x y + a b + c / * (후위표기식이 된다)
+  * pseudo code)
+{% highlight cpp %}
+preorderTreeWalk (x) // root 노드가 x인 sub-tree를 inorder로 순회
+    if x ne null then
+        print key[x]
+        preorderTreeWalk[left[x]]
+        preorderTreeWalk[right[x]]
+{% endhighlight %}
+
+#### Post Traversal
+  * pseudo code)
+{% highlight cpp %}  
+postorderTreeWalk (x) // root 노드가 x인 sub-tree를 inorder로 순회
+    if x ne null then
+        postorderTreeWalk[left[x]]
+        postorderTreeWalk[right[x]]
+        print key[x]
+{% endhighlight %}
+
+
+#### Level Traversal
+    
+## Problem
+ * [ACMICPC: ]()
+ * [LEETCODE: ]()
+**<center><span style="color:navy">Tree</span></center>**  

@@ -1,0 +1,66 @@
+---
+
+layout:   post
+title:    Sort3
+date:     2021-04-30
+image:    algorithm/algorithm.png
+category: Algorithm
+tags:     LinearSort CountingSort RadixSort
+author:   Alex2006
+
+---
+  
+## Counting Sort
+* n개의 정수를 정렬(<span style="color:red">단 정수는 0 ~ k 사이의 수</span>)
+  * example)
+    <center><img src="/images/algorithm/20210430/counting_1.jpg"></center>
+    * 위 문제를 해결한 Version
+      * Step1)
+        <center><img src="/images/algorithm/20210430/counting_2.jpg"></center>
+      * Step2)
+        <center><img src="/images/algorithm/20210430/counting_3.jpg"></center>
+      * Step3)
+        <center><img src="/images/algorithm/20210430/counting_4.jpg"></center>
+      * Step4)
+        <center><img src="/images/algorithm/20210430/counting_5.jpg"></center>
+* pseudo code)
+{% highlight cpp %}
+CountingSort(A, B, k)
+    // - 요소 개수 구하기 - 
+    for i <- 0 to k do C[i] <- 0 // k번 반복
+    for j <- 1 to length[A] do C[A[j]] <- C[A[j]] + 1 // length of A == N번 반복
+    //   --> C[i] now contains the number of elements equal to i
+    
+    // - 누적 합 구하기 - 
+    for i <- 1 to k do C[i] <- C[i] + C[i-1] // K번 반복
+    //   --> C[i] now contains the number of elements less than or equal to i
+    
+    // - 배열 정렬 - 
+    for j <- length[A] downto 1 do B[C[A[j]]] <- A[j]
+                                   C[A[j]] <- C[A[j]]-1
+                                   
+    // - 시간 복잡도 - 
+    //   O(k + n) 또는 O(n) -> n > k 이기때문
+    //   k가 아주 크다면 비실용적, Stable sort Algorithm --> 입력에 먼저 나오는 값이 출력에도 먼저 나옴
+{% endhighlight %}
+
+## Radix Sort
+* n개의 d자리 정수들 이라는 가정이 있다.(길이가 같다는 의미)
+* 가장 낮은 자리수부터 정렬
+  * example)
+    <center><img src="/images/algorithm/20210430/radix_1.jpg"></center>
+* pseudo code)
+{% highlight cpp %}
+RadixSort(A, d) // A: 배열, d: 자리수
+    for i <- 1 to d use a stable sort to sort array A on digit i
+    
+    // - 시간 복잡도 - 
+    //   O(d(n+k))
+    //      * d: 자리수 만큼
+    //      * n+k: counting sort 시간 만큼
+{% endhighlight %}
+  
+## Problem
+ * [ACMICPC: ]()
+ * [LEETCODE: ]()
+**<center><span style="color:navy">Sort3</span></center>**  
